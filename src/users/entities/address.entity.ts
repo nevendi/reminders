@@ -1,15 +1,35 @@
-import {Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Customer } from './customer.entity';
 
-@Entity()
+@Entity({ name: 'addresses' })
 export class Address {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
-    street: string;
-    colony: string;
-    municipality: string;
-    state: string;
-    postalCode: number;
-    number: string;
-    references: string;
-    isPrincipal: boolean;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column()
+  street: string;
+
+  @Column()
+  colony: string;
+
+  @Column()
+  municipality: string;
+
+  @Column()
+  state: string;
+
+  @Column({ name: 'postal_code' })
+  postalCode: number;
+
+  @Column({ name: 'house_number' })
+  houseNumber: string;
+
+  @Column()
+  references: string;
+
+  @Column({ name: 'is_principal' })
+  isPrincipal: boolean;
+
+  @ManyToMany(() => Customer)
+  customers: Customer[];
 }

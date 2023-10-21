@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Expose } from 'class-transformer';
 
 @Entity()
 export abstract class User {
@@ -14,21 +15,21 @@ export abstract class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ name: 'paternal_name' })
   paternalName: string;
 
-  @Column()
+  @Column({ name: 'maternal_name' })
   maternalName: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ name: 'phone_number', unique: true })
   phoneNumber: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

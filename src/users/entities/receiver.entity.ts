@@ -1,7 +1,5 @@
-import {User} from "./user.entity";
-import {Entity} from "typeorm";
+import { User } from './user.entity';
+import { Entity } from 'typeorm';
 
-@Entity()
-export class Receiver extends User {
-
-}
+@Entity({ name: 'receivers' })
+export class Receiver extends User {}

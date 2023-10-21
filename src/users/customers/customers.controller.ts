@@ -3,19 +3,16 @@ import { CreateCustomerDto } from '../dto/create_customer.dto';
 import { Customer } from '../entities/customer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CustomersService } from './customers.service';
 
 @Controller('customers')
 export class CustomersController {
-  constructor(
-    @InjectRepository(Customer)
-    private readonly customerRepository: Repository<Customer>,
-  ) {}
+  constructor(private readonly customerService: CustomersService) {}
 
   @Post()
   async create(
     @Body() createCustomerDto: CreateCustomerDto,
   ): Promise<Customer> {
-    const customer = this.customerRepository.create(createCustomerDto);
-    return await this.customerRepository.save(customer);
+    return this.customerService.create(createCustomerDto);
   }
 }

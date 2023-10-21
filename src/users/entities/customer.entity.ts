@@ -1,12 +1,27 @@
 import { Address } from './address.entity';
 import { User } from './user.entity';
-import {Entity} from "typeorm";
+import { Column, Entity, ManyToMany } from 'typeorm';
+import { JoinTable } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'customers' })
 export class Customer extends User {
+  @Column({ name: 'business_name', nullable: true })
   businessName: string;
+
+  @Column({ name: 'business_image', nullable: true })
   businessImage: string;
-  address: Address;
+
+  @ManyToMany(() => Address, (address) => address.customers)
+  @JoinTable({
+    name: 'customer_address',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'address_id' },
+  })
+  address: Address[];
+
+  @Column({ name: 'phone_validated', default: false })
   phoneValidated: boolean;
-  passwordHash: string;
+
+  @Column()
+  password: string;
 }
