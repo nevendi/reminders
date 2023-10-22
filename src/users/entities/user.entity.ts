@@ -1,12 +1,8 @@
-import {
-  Column,
-  Entity,
-} from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../common/base.entity';
 
 @Entity()
 export abstract class User extends BaseEntity {
-
   @Column()
   name: string;
 

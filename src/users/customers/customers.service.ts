@@ -4,21 +4,25 @@ import { CreateCustomerDto } from '../dto/create_customer.dto';
 import { Customer } from '../entities/customer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Service } from '../../common/service';
 
 @Injectable()
-export class CustomersService {
+export class CustomersService extends Service<Customer> {
   constructor(
     @InjectRepository(Customer)
     private readonly customerRepository: Repository<Customer>,
-  ) {}
+  ) {
+    super(customerRepository);
+  }
 
-  async create(createCustomerDto: CreateCustomerDto): Promise<Customer> {
+  async create(createCustomerDto: CreateCustomerDto): Promise<string> {
     const password = await this.generateHash(createCustomerDto.password);
     const customer = this.customerRepository.create({
       ...createCustomerDto,
       password,
     });
-    return await this.customerRepository.save(customer);
+    const newCustomer = await this.customerRepository.save(customer);
+    return newCustomer.id;
   }
 
   private async generateHash(password: string): Promise<string> {

@@ -2,6 +2,7 @@ import { BaseEntity } from './base.entity';
 import { BaseServiceContract } from './base.service.contract';
 import { Body, Get, Post, Delete, Param, Put } from '@nestjs/common';
 import { DeepPartial } from 'typeorm';
+import {Transform} from "class-transformer";
 
 export class BaseController<T extends BaseEntity> {
   constructor(private readonly baseServiceContract: BaseServiceContract<T>) {}
@@ -17,8 +18,8 @@ export class BaseController<T extends BaseEntity> {
   }
 
   @Post()
-  async create(@Body() dto: DeepPartial<T>): Promise<string> {
-    return this.baseServiceContract.create(dto);
+  async create(@Body() entity: DeepPartial<T>): Promise<string> {
+    return this.baseServiceContract.create(entity);
   }
 
   @Delete(':id')
