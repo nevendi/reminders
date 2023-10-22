@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
-import { Customer } from '../users/entities/customer.entity';
 import { Message } from './entities/message.entity';
-import { CreateMessageDto } from './dto/create_message.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Service } from '../common/service';
+import { CustomersService } from '../users/customers/customers.service';
 
 @Injectable()
-export class MessagesService {
+export class MessagesService extends Service<Message> {
   constructor(
     @InjectRepository(Message)
     private readonly messageRepository: Repository<Message>,
-  ) {}
-
-  async create(createMessageDto: CreateMessageDto): Promise<Message> {
-    return Promise.resolve(undefined);
+    private readonly customersService: CustomersService,
+  ) {
+    super(messageRepository);
   }
 
-  async findAll(customer: Customer): Promise<Message[]> {
-    return await this.messageRepository.find();
-  }
-
-  async findOne(id: string): Promise<Message> {
-    return Promise.resolve(undefined);
+  async create(message: Partial<Message>): Promise<string> {
+    /*
+    * We need to change all this kind of customer retrieval
+    * getting with something like authContext (if any)
+    * */
+    const customer = await this.customersService.findOne(
+      'cea295c1-78a4-4224-b68d-ce6df6d4ec2b',
+    );
+    const augmentedMessage = { ...message, customer };
+    const newMessage = await this.messageRepository.save(augmentedMessage);
+    return newMessage.id;
   }
 }

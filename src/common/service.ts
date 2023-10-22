@@ -18,8 +18,6 @@ export class Service<T extends BaseEntity> implements BaseServiceContract<T> {
   }
 
   create(entity: T): Promise<string> {
-    console.log('CREATING ');
-    console.log(entity);
     try {
       return new Promise<string>((resolve, reject) => {
         this.repository

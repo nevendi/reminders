@@ -4,7 +4,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToOne,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Customer } from '../../users/entities/customer.entity';
 import { MessageTemplate } from './message_template.entity';
@@ -23,7 +22,7 @@ export class Message extends BaseEntity {
   messageTemplate: MessageTemplate;
 
   @JoinColumn({ name: 'receiver_id' })
-  @OneToOne(() => Receiver)
+  @ManyToOne(() => Receiver, (receiver) => receiver.messages)
   receiver: Receiver;
 
   @Column({ name: 'scheduled_at' })

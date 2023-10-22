@@ -29,7 +29,7 @@ export class Customer extends User {
 
   @OneToMany(() => Message, (message) => message.customer)
   messages: Message[];
-  
+
   @OneToMany(() => MessageTemplate, (template) => template.customer)
   messageTemplates: MessageTemplate[];
 }
