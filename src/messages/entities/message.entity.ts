@@ -1,14 +1,38 @@
-import {Column, PrimaryGeneratedColumn} from "typeorm";
-import {Customer} from "../../users/entities/customer.entity";
-import {MessageTemplate} from "./message_template.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Customer } from '../../users/entities/customer.entity';
+import { MessageTemplate } from './message_template.entity';
+import { Receiver } from '../../users/entities/receiver.entity';
+import { BaseEntity } from '../../common/base.entity';
 
-class Message {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+export enum MessageState {
+  SCHEDULED,
+  SENT,
+}
 
-    @Column()
-    messageTemplate: MessageTemplate;
+@Entity({ name: 'messages' })
+export class Message extends BaseEntity {
 
-    @Column()
-    customer: Customer;
+  @JoinColumn({ name: 'message_template_id' })
+  @OneToOne(() => MessageTemplate)
+  messageTemplate: MessageTemplate;
+
+  @JoinColumn({ name: 'customer_id' })
+  @OneToOne(() => Customer)
+  customer: Customer;
+
+  @JoinColumn({ name: 'receiver_id' })
+  @OneToOne(() => Receiver)
+  receiver: Receiver;
+
+  @Column({ name: 'scheduled_at' })
+  scheduledAt: Date;
+
+  @Column({ default: MessageState.SCHEDULED })
+  state: MessageState;
 }

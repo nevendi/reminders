@@ -1,11 +1,9 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Customer } from './customer.entity';
+import { BaseEntity } from '../../common/base.entity';
 
 @Entity({ name: 'addresses' })
-export class Address {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Address extends BaseEntity {
   @Column()
   street: string;
 

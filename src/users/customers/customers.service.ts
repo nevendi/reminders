@@ -25,4 +25,8 @@ export class CustomersService {
     const salt = await bcrypt.genSalt();
     return await bcrypt.hash(password, salt);
   }
+
+  async findOne(id: string) {
+    return this.customerRepository.findOne({ where: { id } });
+  }
 }
