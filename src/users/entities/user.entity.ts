@@ -1,17 +1,8 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import { Expose } from 'class-transformer';
+import { Column, Entity } from 'typeorm';
+import { BaseEntity } from '../../common/base.entity';
 
 @Entity()
-export abstract class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export abstract class User extends BaseEntity {
   @Column()
   name: string;
 
@@ -26,10 +17,4 @@ export abstract class User {
 
   @Column({ name: 'phone_number', unique: true })
   phoneNumber: string;
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
 }
