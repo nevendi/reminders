@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -17,14 +18,9 @@ export enum MessageState {
 
 @Entity({ name: 'messages' })
 export class Message extends BaseEntity {
-
   @JoinColumn({ name: 'message_template_id' })
   @OneToOne(() => MessageTemplate)
   messageTemplate: MessageTemplate;
-
-  @JoinColumn({ name: 'customer_id' })
-  @OneToOne(() => Customer)
-  customer: Customer;
 
   @JoinColumn({ name: 'receiver_id' })
   @OneToOne(() => Receiver)
@@ -35,4 +31,8 @@ export class Message extends BaseEntity {
 
   @Column({ default: MessageState.SCHEDULED })
   state: MessageState;
+
+  @JoinColumn({ name: 'customer_id' })
+  @ManyToOne(() => Customer, (customer) => customer.messages)
+  customer: Customer;
 }

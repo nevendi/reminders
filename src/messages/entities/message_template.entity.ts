@@ -1,5 +1,5 @@
 import { Customer } from '../../users/entities/customer.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
 import { JoinColumn } from 'typeorm';
 import { BaseEntity } from '../../common/base.entity';
 
@@ -20,8 +20,7 @@ export class MessageTemplate extends BaseEntity {
   @Column()
   body: string;
 
-  @OneToOne(() => Customer)
-  @JoinColumn({ name: 'customer_id' })
+  @ManyToOne(() => Customer, (customer) => customer.messageTemplates)
   customer: Customer;
 
   @Column({ default: false })

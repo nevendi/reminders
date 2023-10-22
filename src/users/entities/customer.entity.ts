@@ -1,7 +1,9 @@
 import { Address } from './address.entity';
 import { User } from './user.entity';
-import { Column, Entity, ManyToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { JoinTable } from 'typeorm';
+import { Message } from '../../messages/entities/message.entity';
+import { MessageTemplate } from '../../messages/entities/message_template.entity';
 
 @Entity({ name: 'customers' })
 export class Customer extends User {
@@ -24,4 +26,10 @@ export class Customer extends User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Message, (message) => message.customer)
+  messages: Message[];
+  
+  @OneToMany(() => MessageTemplate, (template) => template.customer)
+  messageTemplates: MessageTemplate[];
 }
