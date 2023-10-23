@@ -15,11 +15,15 @@ export class CustomersService extends Service<Customer> {
     super(customerRepository);
   }
 
-  async create(createCustomerDto: CreateCustomerDto): Promise<string> {
-    const password = await this.generateHash(createCustomerDto.password);
+  async create(createCustomerDTO: CreateCustomerDto): Promise<string> {
+    console.log(`Received the following `);
+    console.log(createCustomerDTO);
+    const addresses = [createCustomerDTO.address];
+    const password = await this.generateHash(createCustomerDTO.password);
     const customer = this.customerRepository.create({
-      ...createCustomerDto,
+      ...createCustomerDTO,
       password,
+      addresses
     });
     const newCustomer = await this.customerRepository.save(customer);
     return newCustomer.id;
@@ -33,4 +37,5 @@ export class CustomersService extends Service<Customer> {
   async findOne(id: string) {
     return this.customerRepository.findOne({ where: { id } });
   }
+
 }

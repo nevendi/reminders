@@ -4,6 +4,7 @@ import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { JoinTable } from 'typeorm';
 import { Message } from '../../messages/entities/message.entity';
 import { MessageTemplate } from '../../messages/entities/message_template.entity';
+import {IsString} from "class-validator";
 
 @Entity({ name: 'customers' })
 export class Customer extends User {
@@ -13,13 +14,15 @@ export class Customer extends User {
   @Column({ name: 'business_image', nullable: true })
   businessImage: string;
 
-  @ManyToMany(() => Address, (address) => address.customers)
+  @ManyToMany(() => Address, (address) => address.customers, {
+    cascade: true,
+  })
   @JoinTable({
     name: 'customer_address',
     joinColumn: { name: 'user_id', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'address_id' },
   })
-  address: Address[];
+  addresses: Address[];
 
   @Column({ name: 'phone_validated', default: false })
   phoneValidated: boolean;
