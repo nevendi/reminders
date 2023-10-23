@@ -1,5 +1,6 @@
-import { IsEmail, IsPhoneNumber, IsString, max } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
+import { CreateAddressDto } from './create-address.dto';
 
 export class CreateCustomerDto {
   @IsString()
@@ -15,6 +16,8 @@ export class CreateCustomerDto {
 
   @IsEmail()
   email: string;
+
+  address: CreateAddressDto;
 
   @IsString()
   password: string;

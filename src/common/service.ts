@@ -1,27 +1,29 @@
-import { Customer } from '../users/entities/customer.entity';
-import { BaseDto } from './base.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import {DeepPartial, Entity, Repository} from 'typeorm';
+import {DeepPartial, Repository} from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { BaseServiceContract } from './base.service.contract';
 import { BadGatewayException } from '@nestjs/common';
+import { PaginationQueryDto } from './pagination-query.dto';
 
 export class Service<T extends BaseEntity> implements BaseServiceContract<T> {
   constructor(private readonly repository: Repository<T>) {}
 
-  findAll(): Promise<T[]> {
+  findAll(paginationQuery: PaginationQueryDto): Promise<T[]> {
+    const { limit, offset } = paginationQuery;
     try {
-      return <Promise<T[]>>this.repository.find();
+      return <Promise<T[]>>this.repository.find({
+        skip: offset,
+        take: limit,
+      });
     } catch (error) {
       throw new BadGatewayException(error);
     }
   }
 
-  create(entity: T): Promise<string> {
+  create(dto: DeepPartial<T>): Promise<string> {
     try {
       return new Promise<string>((resolve, reject) => {
         this.repository
-          .save(entity)
+          .save(dto)
           .then((created) => resolve(created.id))
           .catch((err) => reject(err));
       });
@@ -30,9 +32,9 @@ export class Service<T extends BaseEntity> implements BaseServiceContract<T> {
     }
   }
 
-  findOne(id: string): Promise<T> {
+  findOne(id: any): Promise<T> {
     try {
-      return <Promise<T>>this.repository.findOneById(id);
+      return <Promise<T>>this.repository.findOne({ where: { id } });
     } catch (error) {
       throw new BadGatewayException(error);
     }

@@ -22,12 +22,12 @@ export class Address extends BaseEntity {
   @Column({ name: 'house_number' })
   houseNumber: string;
 
-  @Column()
+  @Column({ nullable: true })
   references: string;
 
   @Column({ name: 'is_principal' })
   isPrincipal: boolean;
 
-  @ManyToMany(() => Customer)
+  @ManyToMany(() => Customer, (customer) => customer.addresses)
   customers: Customer[];
 }
