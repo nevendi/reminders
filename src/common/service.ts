@@ -1,4 +1,4 @@
-import {DeepPartial, Repository} from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { BaseServiceContract } from './base.service.contract';
 import { BadGatewayException } from '@nestjs/common';
